@@ -116,6 +116,8 @@
 % 颜色宏包
 \RequirePackage{xcolor}
 
+% LastPage
+\RequirePackage{lastpage}
 
 %% 一些有趣的符号图案
 \RequirePackage{marvosym}
@@ -343,32 +345,38 @@
   \fi
 }
 
-\pagestyle{fancy} {
-	\fancyhf{}
-	\fancyhead[LO, RE]{\small {\it \sjtu@value@school\sjtu@value@degree\sjtu@label@thesis}}  % 奇数页左页眉和偶数页右页眉，即靠近书籍的页眉
-	\fancyhead[RO]{\small {\it \leftmark}}                   % 奇数页右页眉
-	\fancyhead[LE]{\small {\it \sjtu@value@titlemark}}  % 偶数页左页眉
-	\fancyfoot[C]{\small ~---~{\bf\thepage}~---~}      % 页脚
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small {\it \includegraphics[width=0.22\textwidth]{sjtubanner}}}  % 奇数页左页眉
+\fancyhead[R]{\small {\it \sjtu@value@titlemark}}                   % 奇数页右页眉
+\fancyfoot[C]{\small ~第~{\bf\thepage}~页~共~{\bf\pageref{LastPage}}~页~}      % 页脚
+
+
+\fancypagestyle{plain}{% 设置开章页页眉页脚风格(只有页码作为页脚)
+  \fancyhf{}%
+  \fancyhead[L]{\small {\it \includegraphics[width=0.22\textwidth]{sjtubanner}}}  % 奇数页左页眉
+  \fancyhead[R]{\small {\it \sjtu@value@titlemark}}                   % 奇数页右页眉
+  \fancyfoot[C]{\small ~第~{\bf\thepage}~页~共~{\bf\pageref{LastPage}}~页~}      % 页脚
 }
 
-\fancypagestyle{plain} { % 设置开章页页眉页脚风格
-  \fancyhf{}
-  \fancyhead[LO,RE]{\small {\it \sjtu@value@school\sjtu@value@degree\sjtu@label@thesis}}  % 奇数页左页眉和偶数页右页眉，即靠近书籍的页眉
-  \fancyhead[RO]{\small {\it \leftmark}}                   % 奇数页右页眉
-  \fancyhead[LE]{\small {\it \sjtu@value@titlemark}} 	 % 偶数页左页眉
-  \fancyfoot[C]{\small ~---~{\bf\thepage}~---~} %页脚格式
+\fancypagestyle{frontmatter}{ % "frontmatter" page style
+  \fancyhf{}%
+  \fancyhead[L]{\small {\it \includegraphics[width=0.22\textwidth]{sjtubanner}}}  % 奇数页左页眉
+  \fancyhead[R]{\small {\it \sjtu@value@titlemark}}                   % 奇数页左页眉
+  \fancyfoot[C]{--- {\bf\thepage} ---}      % 页脚
 }
+
 
  % 中文摘要
- \newenvironment{abstract}{\chapter[摘要]{\sjtu@value@title\vskip 20pt\sjtu@label@abstract}}{}
+ \newenvironment{abstract}{\chapter*{\sjtu@value@title\vskip 20pt\sjtu@label@abstract}}{}
 
  % 中文关键词
  \newcommand\keywords[1]{\vspace{2ex}\noindent{\bf\large \sjtu@label@keywords} #1}
 
- %_ 英文摘要
- \newenvironment{englishabstract}{\chapter[ABSTRACT]{\sjtu@value@englishtitle\vskip 20pt\bfseries \sjtu@label@englishabstract}}{}
+ % 英文摘要
+ \newenvironment{englishabstract}{\chapter*{\sjtu@value@englishtitle\vskip 20pt\bfseries \sjtu@label@englishabstract}}{}
 
- % _英文摘要
+ % 英文摘要
  \newcommand\englishkeywords[1]{\vspace{2ex}\noindent{\bf\large \sjtu@label@englishkeywords} #1}
 
 % 目录
@@ -378,10 +386,11 @@
   \else
   \@restonecolfalse
   \fi
-  \chapter{\contentsname}%目录里显示“目录”，否则\chapter*
+  \chapter*{\contentsname}%目录里显示“目录”，否则\chapter*
   \@mkboth{\MakeUppercase\contentsname}{\MakeUppercase\contentsname}%
   \@starttoc{toc}%
   \if@restonecol\twocolumn\fi
+  % \thispagestyle{frontmatter}
 }
 
 
@@ -475,14 +484,10 @@
   {\chapter{\sjtu@label@thanks}}
   {}
   
-\newenvironment{symbolnote}
-  {\chapter{\sjtu@label@symbolnote}}
-  {} 
-
+\newenvironment{symbolnote}{\chapter{\sjtu@label@symbolnote}}{} 
 
 \setcounter{secnumdepth}{4}  % 章节编号深度 (part 对应 -1)
 \setcounter{tocdepth}{2}     % 目录深度 (part 对应 -1)
-    
     
 \newtheoremstyle{break}% name
   {}%      Space above, empty = `usual value'
